@@ -51,6 +51,14 @@ namespace NASMClassifier
         [Name("nasm.label")]
         internal static ClassificationTypeDefinition NASMLabel = null;
 
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("nasm.string")]
+        internal static ClassificationTypeDefinition NASMString = null;
+
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("nasm.character")]
+        internal static ClassificationTypeDefinition NASMCharacter = null;
+
         #endregion
 
     }

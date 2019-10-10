@@ -48,13 +48,21 @@ namespace NASMClassifier
         {
             _buffer = buffer;
             InitTypes();
-            _delimiters = ";,[]() ";
+            _delimiters = "\t;,[]()\"' ";
         }
 
         private void InitTypes()
         {
             _nasmTypes = new Dictionary<NASMTokenTypes, string>()
             {
+                {
+                    NASMTokenTypes.String,
+                    "\""
+                },
+                {
+                    NASMTokenTypes.Character,
+                    "'"
+                },
                 {
                     NASMTokenTypes.Comment, 
                     ";"
@@ -166,14 +174,17 @@ namespace NASMClassifier
 
                 string[] tokens = Split(containingLine.GetText().ToLower(), _delimiters.ToCharArray());
 
+                NASMTokenTypes overrideType = NASMTokenTypes.Default;
 
                 foreach (string token in tokens)
                 {
                     NASMTokenTypes type = GetTokenType(token);
 
+                    SnapshotSpan tokenSpan;
+
                     if (type == NASMTokenTypes.Comment)
                     {
-                        SnapshotSpan tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, containingLine.End.Position - curLoc));
+                        tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, containingLine.End.Position - curLoc));
 
                         if (tokenSpan.IntersectsWith(curSpan))
                         {
@@ -182,19 +193,56 @@ namespace NASMClassifier
                         }
 
                     }
+
+
+                    if (overrideType == NASMTokenTypes.String)
+                    {
+                        if (type == NASMTokenTypes.String)
+                        {
+                            overrideType = NASMTokenTypes.Default;
+                        }
+                        else
+                        {
+                            type = overrideType;
+                        }
+                    }
                     else
                     {
-                        SnapshotSpan tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, token.Length));
-
-                        if (tokenSpan.IntersectsWith(curSpan))
+                        if (type == NASMTokenTypes.String)
                         {
-                            yield return new TagSpan<NASMTokenTag>(tokenSpan, new NASMTokenTag(type));
+                            overrideType = NASMTokenTypes.String;
                         }
-
-                        //add an extra char location because of the space
-                        curLoc += token.Length;
-
                     }
+
+                    if (overrideType == NASMTokenTypes.Character)
+                    {
+                        if (type == NASMTokenTypes.Character)
+                        {
+                            overrideType = NASMTokenTypes.Default;
+                        }
+                        else
+                        {
+                            type = NASMTokenTypes.Character;
+                        }
+                    }
+                    else
+                    {
+                        if (type == NASMTokenTypes.Character)
+                        {
+                            overrideType = NASMTokenTypes.Character;
+                        }
+                    }
+
+                    tokenSpan = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc, token.Length));
+
+                    if (tokenSpan.IntersectsWith(curSpan))
+                    {
+                        yield return new TagSpan<NASMTokenTag>(tokenSpan, new NASMTokenTag(type));
+                    }
+
+                    //add an extra char location because of the space
+                    curLoc += token.Length;
+
                 }
             }
         }

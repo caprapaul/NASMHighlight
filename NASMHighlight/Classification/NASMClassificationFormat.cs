@@ -155,7 +155,36 @@ namespace NASMClassifier
         {
             DisplayName = "NASM-Label";
             ForegroundColor = Color.FromRgb(255, 184, 108);
-            IsBold = true;
+        }
+    }
+
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "nasm.string")]
+    [Name("nasm.string")]
+    [UserVisible(true)]
+    [Order(Before = Priority.Default)]
+    internal sealed class NASMString : ClassificationFormatDefinition
+    {
+
+        public NASMString()
+        {
+            DisplayName = "NASM-String";
+            ForegroundColor = Color.FromRgb(252, 252, 153);
+        }
+    }
+
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "nasm.character")]
+    [Name("nasm.character")]
+    [UserVisible(true)]
+    [Order(Before = Priority.Default)]
+    internal sealed class NASMCharacter : ClassificationFormatDefinition
+    {
+
+        public NASMCharacter()
+        {
+            DisplayName = "NASM-Character";
+            ForegroundColor = Color.FromRgb(252, 252, 153);
         }
     }
 }
