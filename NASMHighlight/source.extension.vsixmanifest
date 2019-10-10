@@ -1,12 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="NASMHighlight.8e0308a6-834d-4cd4-97c9-d1f2cafb1bb7" Version="1.0" Language="en-US" Publisher="Paul Capra" />
+        <Identity Id="NASMHighlight.8e0308a6-834d-4cd4-97c9-d1f2cafb1bb7" Version="1.0" Language="en-US" Publisher="Paul Capra"/>
         <DisplayName>NASM Highlight</DisplayName>
-        <Description xml:space="preserve">A syntax highlighter for assembly.A syntax </Des
-        <License>License.txt</License>
-        <ReleaseNotes>index.html</ReleaseNotes>
-        <Tags>assembly, syntax highlighter, nasm, asm</Tags>cription>
+        <Description xml:space="preserve">A syntax highlighter for assembly.</Description>
+        <MoreInfo>https://github.com/caprapaul/NASMHighlight</MoreInfo>
+        <License>LICENSE.txt</License>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 16.0)" />
